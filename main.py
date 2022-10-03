@@ -40,7 +40,7 @@ async def create_item(item: Item):
     return item_dict
 
 @app.put("/items/{item_id}")
-async def create_item(item_id: int, item: Item, q: str | None = Query(default=None, max_length=50)):
+async def create_item(item_id: int, item: Item, q: str | None = Query(default=None, max_length=50, min_length=3, regex="^fixedquery$")):
     result = {"item_id": item_id, **item.dict()}
     if q:
         result.update({"q": q})
