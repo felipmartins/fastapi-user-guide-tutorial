@@ -14,6 +14,9 @@ class Item(BaseModel):
     price: float
     tax: float | None = None
 
+class User(BaseModel):
+    username: str
+    full_name: str | None = None
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
@@ -45,6 +48,11 @@ async def create_item(item_id: int, item: Item, q: str | None = Query(default=No
     if q:
         result.update({"q": q})
     return result
+
+@app.put("/items2/{item_id}")
+async def update_item(item_id: int, item: Item, user: User):
+    results = {"item_id": item_id, "item": item, "user": user}
+    return results
 
 
 @app.get("/items/{item_id}")
@@ -105,3 +113,5 @@ async def read_user_item(
             {"description": "This is an amazing item that has a long description"}
         )
     return item
+
+
