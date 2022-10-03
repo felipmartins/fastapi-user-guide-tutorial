@@ -59,6 +59,12 @@ def select_diffenrent_heroes(hero_name: str):
         for hero in results:
             print(hero)
 
+def select_over_35_heroes():
+    with Session(engine) as session:
+        statement = select(Hero).where(Hero.age >= 35)
+        results = session.exec(statement)
+        for hero in results:
+            print(hero)
 
 
 def main():
@@ -67,6 +73,7 @@ def main():
     select_heroes()
     select_specific_hero("Spider-Boy")
     select_diffenrent_heroes("Spider-Boy")
+    select_over_35_heroes()
 
 if __name__ == "__main__":
     main()
