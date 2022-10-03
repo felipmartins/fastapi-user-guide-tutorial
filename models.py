@@ -31,6 +31,8 @@ def create_heroes():
 
     session.commit()
 
+    session.close()
+
 
 def main():
     create_db_and_tables()
