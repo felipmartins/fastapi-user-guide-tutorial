@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlmodel import Field, SQLModel, create_engine, Session
+from sqlmodel import Field, SQLModel, create_engine, Session, select
 
 
 class Hero(SQLModel, table=True):
@@ -30,10 +30,35 @@ def create_heroes():
 
         session.commit()
 
+def select_heroes():
+    with Session(engine) as session:
+        statement = select(Hero)
+        results = session.exec(statement)
+        for hero in results:
+            print(hero.name)
+
+def select_specific_hero(hero_name: str):
+    with Session(engine) as session:
+        statement = select(Hero).where(Hero.name == hero_name)
+        results = session.exec(statement)
+        for hero in results:
+            print(hero)
+
+def select_diffenrent_heroes(hero_name: str):
+    with Session(engine) as session:
+        statement = select(Hero).where(Hero.name != hero_name)
+        results = session.exec(statement)
+        for hero in results:
+            print(hero)
+
+
 
 def main():
     create_db_and_tables()
     create_heroes()
+    select_heroes()
+    select_specific_hero("Spider-Boy")
+    select_diffenrent_heroes("Spider-Boy")
 
 if __name__ == "__main__":
     main()
